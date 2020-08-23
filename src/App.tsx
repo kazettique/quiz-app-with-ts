@@ -1,11 +1,8 @@
 import React, { useState } from 'react'
-import { fetchQuizQuestions } from './API'
+import { fetchQuizQuestions, Difficulty, QuestionState } from './API'
 
 // Components
 import QuestionCard from './components/QuestionCard'
-
-// Types
-import { QuestionState, Difficulty } from './API'
 
 // Styles
 import { GlobalStyle, Wrapper } from './App.styles'
@@ -47,15 +44,15 @@ const App: React.FC = () => {
       // check answer against correct answer
       const correct = questions[number].correct_answer === answer
       // add score if answer is correct
-      if (correct) setScore(prevState => prevState + 1)
+      if (correct) setScore((prevState) => prevState + 1)
       // save answer in the array for user answers
       const answerObject = {
         question: questions[number].question,
         answer,
         correct,
-        correctAnswer: questions[number].correct_answer
+        correctAnswer: questions[number].correct_answer,
       }
-      setUserAnswers(prevState => [...prevState, answerObject])
+      setUserAnswers((prevState) => [...prevState, answerObject])
     }
   }
 
@@ -75,15 +72,13 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Wrapper>
         <h1>REACT QUIZ</h1>
-        {(gameOver || userAnswers.length === TOTAL_QUESTIONS) &&
-          (
-            <button className="start" onClick={startTrivia}>
-              Start
-            </button>
-          )
-        }
+        {(gameOver || userAnswers.length === TOTAL_QUESTIONS) && (
+          <button className='start' onClick={startTrivia}>
+            Start
+          </button>
+        )}
 
-        {!gameOver && <p className="score">Score: {score}</p>}
+        {!gameOver && <p className='score'>Score: {score}</p>}
         {loading && <p>Loading Question...</p>}
         {!loading && !gameOver && (
           <QuestionCard
@@ -95,8 +90,10 @@ const App: React.FC = () => {
             callback={checkAnswer}
           />
         )}
-        {(!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1) && (
-          <button className="next" onClick={nextQuestion}>Next Question</button>
+        {!gameOver && !loading && userAnswers.length === number + 1 && number !== TOTAL_QUESTIONS - 1 && (
+          <button className='next' onClick={nextQuestion}>
+            Next Question
+          </button>
         )}
       </Wrapper>
     </>
